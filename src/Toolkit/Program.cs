@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
+
 using Vivelin.Toolkit;
 
 namespace Toolkit
@@ -18,7 +17,7 @@ namespace Toolkit
             if (args.Length > 0)
             {
                 // TODO: If file is an image, resize it and add it to the clipboard
-                
+
                 // Else: error (unsupported file type)
 
                 // Else: error (unsupported argument)
@@ -28,19 +27,30 @@ namespace Toolkit
                 using var buffer = new MemoryStream();
                 var image = Clipboard.GetImage();
                 image.Save(buffer);
+                buffer.Seek(0, SeekOrigin.Begin);
 
                 var optimizer = new ImageOptimizer();
-                var options = new ImageOptimizerOptions
-                {
-
-                };
                 using var target = new MemoryStream();
-                optimizer.Optimize(buffer, target, options);
+                optimizer.OptimizeAsync(buffer, target).GetAwaiter().GetResult();
+                target.Seek(0, SeekOrigin.Begin);
+
+                var decoder = new PngBitmapDecoder(target,
+                    BitmapCreateOptions.None,
+                    BitmapCacheOption.Default);
+                var frame = decoder.Frames.Single();
+                Clipboard.SetImage(frame);
+                
+                return ExitCode.Success;
             }
 
             var wpfApp = new App();
             wpfApp.InitializeComponent();
             return wpfApp.Run();
+        }
+
+        private class ExitCode
+        {
+            public const int Success = 0;
         }
     }
 }
