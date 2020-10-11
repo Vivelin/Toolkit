@@ -7,5 +7,6 @@ namespace Vivelin.Toolkit
     public class ImageOptimizerOptions
     {
         public FileSize TargetSize { get; set; }
+            = FileSize.MB(8);
     }
 }
