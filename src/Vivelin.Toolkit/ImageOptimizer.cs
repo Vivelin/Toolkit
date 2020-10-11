@@ -27,13 +27,20 @@ namespace Vivelin.Toolkit
             ImageOptimizerOptions options,
             CancellationToken cancellationToken = default)
         {
-            using var image = await Image.LoadAsync(_configuration, source, cancellationToken);
-            image.Mutate(x => x.Resize(new ResizeOptions
+            try
             {
-                Size = new Size(options.TargetWidth, options.TargetHeight),
-                Mode = ResizeMode.Max
-            }));
-            await image.SaveAsPngAsync(target, cancellationToken);
+                using var image = await Image.LoadAsync(_configuration, source, cancellationToken);
+                image.Mutate(x => x.Resize(new ResizeOptions
+                {
+                    Size = new Size(options.TargetWidth, options.TargetHeight),
+                    Mode = ResizeMode.Max
+                }));
+                await image.SaveAsPngAsync(target, cancellationToken);
+            }
+            catch (UnknownImageFormatException ex)
+            {
+                throw new ArgumentException("The source does not contain a valid image or the image is of an unsupported format.", ex);
+            }
         }
     }
 }

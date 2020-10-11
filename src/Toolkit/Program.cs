@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -10,37 +11,53 @@ namespace Toolkit
 {
     public static class Program
     {
+        private static readonly ImageOptimizer s_optimizer
+            = new ImageOptimizer();
+
         [STAThread]
         public static int Main(string[] args)
         {
-            // TODO: Refactor into ToolFactory?
             if (args.Length > 0)
             {
-                // TODO: If file is an image, resize it and add it to the clipboard
+                var path = args[0];
+                if (!File.Exists(path))
+                {
+                    ShowError($"Cannot find '{path}'. Make sure you typed the name correctly, and then try again.");
+                    return ExitCode.FileNotFound;
+                }
 
-                // Else: error (unsupported file type)
-
-                // Else: error (unsupported argument)
+                using var file = File.OpenRead(path);
+                using var buffer = new MemoryStream();
+                try
+                {
+                    OptimizeAsync(file, buffer).GetAwaiter().GetResult();
+                    SetClipboardImage(buffer);
+                    return ExitCode.Success;
+                }
+                catch (ArgumentException)
+                {
+                    ShowError($"'{path}' is not a valid or supported image file. Please select another image file and then try again.");
+                    return ExitCode.InvalidArguments;
+                }
             }
             else if (Clipboard.ContainsImage())
             {
                 using var buffer = new MemoryStream();
                 var image = Clipboard.GetImage();
                 image.Save(buffer);
-                buffer.Seek(0, SeekOrigin.Begin);
 
-                var optimizer = new ImageOptimizer();
                 using var target = new MemoryStream();
-                optimizer.OptimizeAsync(buffer, target).GetAwaiter().GetResult();
-                target.Seek(0, SeekOrigin.Begin);
-
-                var decoder = new PngBitmapDecoder(target,
-                    BitmapCreateOptions.None,
-                    BitmapCacheOption.Default);
-                var frame = decoder.Frames.Single();
-                Clipboard.SetImage(frame);
-                
-                return ExitCode.Success;
+                try
+                {
+                    OptimizeAsync(buffer, target).GetAwaiter().GetResult();
+                    SetClipboardImage(target);
+                    return ExitCode.Success;
+                }
+                catch (ArgumentException)
+                {
+                    ShowError("The clipboard contains an unsupported image file. Please choose another image and then try again.");
+                    return ExitCode.InvalidArguments;
+                }
             }
 
             var wpfApp = new App();
@@ -48,9 +65,39 @@ namespace Toolkit
             return wpfApp.Run();
         }
 
-        private class ExitCode
+        private static void ShowError(string message)
+        {
+            MessageBox.Show(message, "Toolkit", MessageBoxButton.OK, 
+                MessageBoxImage.Error);
+        }
+
+        private static async Task OptimizeAsync(Stream source, Stream target)
+        {
+            if (source.CanSeek)
+                source.Seek(0, SeekOrigin.Begin);
+
+            await s_optimizer.OptimizeAsync(source, target);
+        }
+
+        private static void SetClipboardImage(Stream target)
+        {
+            if (target.CanSeek)
+                target.Seek(0, SeekOrigin.Begin);
+
+            var decoder = new PngBitmapDecoder(target,
+                BitmapCreateOptions.None,
+                BitmapCacheOption.Default);
+            var frame = decoder.Frames.Single();
+            Clipboard.SetImage(frame);
+        }
+
+        private static class ExitCode
         {
             public const int Success = 0;
+
+            public const int InvalidArguments = 400;
+
+            public const int FileNotFound = 404;
         }
     }
 }
