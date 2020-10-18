@@ -67,7 +67,7 @@ namespace Toolkit
 
         private static void ShowError(string message)
         {
-            MessageBox.Show(message, "Toolkit", MessageBoxButton.OK, 
+            MessageBox.Show(message, "Toolkit", MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
 
