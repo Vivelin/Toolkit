@@ -45,7 +45,7 @@
               Header="Options">
       <StackPanel Orientation="Horizontal">
         <Button x:Name="OptimizeButton"
-                Click="OptimizeButton_Click">Optimize</Button>
+                Click="OptimizeButton_Click">Optimize and copy</Button>
       </StackPanel>
     </GroupBox>
 
@@ -64,8 +64,8 @@
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2">
-          <Button x:Name="CopyResult"
-                  Click="CopyResult_Click">Copy</Button>
+          <Button x:Name="SaveResult"
+                  Click="SaveResult_Click">Save...</Button>
           <TextBlock x:Name="ResultPropertiesText"
                      VerticalAlignment="Center"
                      Text="{Binding ResultImageProperties}">

@@ -15,10 +15,12 @@
       <Style TargetType="Button">
         <Setter Property="Margin"
                 Value="8" />
+        <Setter Property="Padding"
+                Value="6" />
         <Setter Property="MinHeight"
                 Value="23" />
         <Setter Property="MinWidth"
-                Value="60" />
+                Value="80" />
       </Style>
     </ResourceDictionary>
   </Application.Resources>

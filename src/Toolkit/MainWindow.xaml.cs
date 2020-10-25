@@ -161,6 +161,8 @@ namespace Toolkit
             var image = _bitmapSourceFactory.LoadImage(buffer, ".png");
             ResultImageSource = image;
             ResultImageProperties = $"{Math.Floor(image.Width)}x{Math.Floor(image.Height)} (.png, {fileSize.Megabytes:F1} MB)";
+
+            Clipboard.SetImage(image);
         }
 
         private Stream GetSourceStream()
@@ -181,9 +183,9 @@ namespace Toolkit
             return null;
         }
 
-        private void CopyResult_Click(object sender, RoutedEventArgs e)
+        private void SaveResult_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetImage(ResultImageSource);
+
         }
     }
 }
