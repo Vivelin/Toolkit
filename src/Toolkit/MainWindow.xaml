@@ -4,8 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Toolkit"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
-        ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
         Title="Toolkit"
         Height="800"
@@ -31,11 +29,9 @@
                Source="{Binding SourceImageSource}" />
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1">
-          <Button Margin="8"
-                  x:Name="PasteSource"
+          <Button x:Name="PasteSource"
                   Click="PasteSource_Click">Paste</Button>
-          <Button Margin="8"
-                  x:Name="BrowseSource"
+          <Button x:Name="BrowseSource"
                   Click="BrowseSource_Click">Browse...</Button>
           <TextBlock x:Name="SourcePropertiesText"
                      VerticalAlignment="Center"
@@ -45,11 +41,13 @@
       </Grid>
     </GroupBox>
 
-    <StackPanel Orientation="Horizontal"
-                Grid.Row="1">
-      <Button Margin="8"
-              x:Name="OptimizeButton">Optimize</Button>
-    </StackPanel>
+    <GroupBox Grid.Row="1"
+              Header="Options">
+      <StackPanel Orientation="Horizontal">
+        <Button x:Name="OptimizeButton"
+                Click="OptimizeButton_Click">Optimize</Button>
+      </StackPanel>
+    </GroupBox>
 
     <GroupBox Grid.Row="2"
               Header="Result">
@@ -59,15 +57,19 @@
           <RowDefinition Height="*" />
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
+
         <Image x:Name="ResultImage"
                Grid.Row="1"
                Source="{Binding ResultImageSource}" />
-        
+
         <StackPanel Orientation="Horizontal"
                     Grid.Row="2">
-          <Button Margin="8"
-                  x:Name="CopyResult">Copy</Button>
+          <Button x:Name="CopyResult"
+                  Click="CopyResult_Click">Copy</Button>
+          <TextBlock x:Name="ResultPropertiesText"
+                     VerticalAlignment="Center"
+                     Text="{Binding ResultImageProperties}">
+          </TextBlock>
         </StackPanel>
       </Grid>
     </GroupBox>

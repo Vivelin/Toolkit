@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 using Microsoft.Win32;
 
@@ -16,21 +17,28 @@ namespace Toolkit
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private ImageSource _sourceImageSource;
-        private ImageSource _resultImageSource;
-        private ImageSourceFactory _imageSourceFactory;
+        private const string ClipboardSource = "Clipboard";
+
+        private readonly BitmapSourceFactory _bitmapSourceFactory;
+        private readonly ImageOptimizer _optimizer;
+
+        private BitmapSource _sourceImageSource;
+        private BitmapSource _resultImageSource;
         private string _sourceImageProperties;
+        private string _resultImageProperties;
+        private string _sourceFileName;
 
         public MainWindow()
         {
-            _imageSourceFactory = new ImageSourceFactory();
+            _bitmapSourceFactory = new BitmapSourceFactory();
+            _optimizer = new ImageOptimizer();
 
             InitializeComponent();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ImageSource SourceImageSource
+        public BitmapSource SourceImageSource
         {
             get { return _sourceImageSource; }
             set
@@ -43,7 +51,7 @@ namespace Toolkit
             }
         }
 
-        public ImageSource ResultImageSource
+        public BitmapSource ResultImageSource
         {
             get { return _resultImageSource; }
             set
@@ -69,6 +77,32 @@ namespace Toolkit
             }
         }
 
+        public string ResultImageProperties
+        {
+            get { return _resultImageProperties; }
+            set
+            {
+                if (_resultImageProperties != value)
+                {
+                    _resultImageProperties = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string SourceFileName
+        {
+            get { return _sourceFileName; }
+            set
+            {
+                if (_sourceFileName != value)
+                {
+                    _sourceFileName = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (propertyName is null)
@@ -79,8 +113,13 @@ namespace Toolkit
 
         private void PasteSource_Click(object sender, RoutedEventArgs e)
         {
-            if (Clipboard.ContainsImage())
-                SourceImageSource = Clipboard.GetImage();
+            if (!Clipboard.ContainsImage())
+                return;
+
+            var clipboardImage = Clipboard.GetImage();
+            SourceImageSource = clipboardImage;
+            SourceImageProperties = $"{clipboardImage.Width}x{clipboardImage.Height} (???, {double.NaN:F1} MB)";
+            SourceFileName = ClipboardSource;
         }
 
         private void BrowseSource_Click(object sender, RoutedEventArgs e)
@@ -100,10 +139,51 @@ namespace Toolkit
                 using var file = File.OpenRead(openFile.FileName);
 
                 var extension = Path.GetExtension(openFile.FileName);
-                var image = _imageSourceFactory.LoadImage(file, extension);
+                var image = _bitmapSourceFactory.LoadImage(file, extension);
                 SourceImageSource = image;
                 SourceImageProperties = $"{image.Width}x{image.Height} ({extension}, {fileSize.Megabytes:F1} MB)";
+                SourceFileName = openFile.FileName;
             }
+        }
+
+        private async void OptimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            using var source = GetSourceStream();
+            if (source == null)
+                return;
+
+            using var buffer = new MemoryStream();
+            var options = new ImageOptimizerOptions();
+            await _optimizer.OptimizeAsync(source, buffer, options);
+
+            buffer.Seek(0, SeekOrigin.Begin);
+            var fileSize = new FileSize(buffer.Length);
+            var image = _bitmapSourceFactory.LoadImage(buffer, ".png");
+            ResultImageSource = image;
+            ResultImageProperties = $"{Math.Floor(image.Width)}x{Math.Floor(image.Height)} (.png, {fileSize.Megabytes:F1} MB)";
+        }
+
+        private Stream GetSourceStream()
+        {
+            if (SourceFileName == ClipboardSource)
+            {
+                var buffer = new MemoryStream();
+                SourceImageSource.Save(buffer);
+                buffer.Seek(0, SeekOrigin.Begin);
+                return buffer;
+            }
+
+            if (File.Exists(SourceFileName))
+            {
+                return File.Open(SourceFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            }
+
+            return null;
+        }
+
+        private void CopyResult_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetImage(ResultImageSource);
         }
     }
 }

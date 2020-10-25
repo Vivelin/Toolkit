@@ -17,7 +17,7 @@ namespace Toolkit
         [STAThread]
         public static int Main(string[] args)
         {
-            if (args.Length > 0)
+            /*if (args.Length > 0)
             {
                 var path = args[0];
                 if (!File.Exists(path))
@@ -59,7 +59,7 @@ namespace Toolkit
                     return ExitCode.InvalidArguments;
                 }
             }
-
+            */
             var wpfApp = new App();
             wpfApp.InitializeComponent();
             return wpfApp.Run();

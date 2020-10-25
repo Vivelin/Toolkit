@@ -6,9 +6,9 @@ using System.Windows.Media.Imaging;
 
 namespace Toolkit
 {
-    public class ImageSourceFactory
+    public class BitmapSourceFactory
     {
-        public ImageSource LoadImage(Stream source, string extension)
+        public BitmapSource LoadImage(Stream source, string extension)
         {
             var decoder = CreateDecoder(source, extension);
             return decoder.Frames.SingleOrDefault();
