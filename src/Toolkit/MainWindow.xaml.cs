@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
 using Microsoft.Win32;
@@ -116,6 +117,11 @@ namespace Toolkit
             if (!Clipboard.ContainsImage())
                 return;
 
+            LoadFromClipboard();
+        }
+
+        private void LoadFromClipboard()
+        {
             var clipboardImage = Clipboard.GetImage();
             SourceImageSource = clipboardImage;
             SourceImageProperties = $"{clipboardImage.Width}x{clipboardImage.Height} (???, {double.NaN:F1} MB)";
@@ -133,17 +139,21 @@ namespace Toolkit
             openFile.FilterIndex = 3;
             if (openFile.ShowDialog(this) == true)
             {
-                var fileInfo = new FileInfo(openFile.FileName);
-                var fileSize = new FileSize(fileInfo.Length);
-
-                using var file = File.OpenRead(openFile.FileName);
-
-                var extension = Path.GetExtension(openFile.FileName);
-                var image = _bitmapSourceFactory.LoadImage(file, extension);
-                SourceImageSource = image;
-                SourceImageProperties = $"{image.Width}x{image.Height} ({extension}, {fileSize.Megabytes:F1} MB)";
-                SourceFileName = openFile.FileName;
+                LoadFromFile(openFile.FileName);
             }
+        }
+
+        private void LoadFromFile(string path)
+        {
+            var fileInfo = new FileInfo(path);
+            var fileSize = new FileSize(fileInfo.Length);
+            var file = File.OpenRead(path);
+
+            var extension = Path.GetExtension(path);
+            var image = _bitmapSourceFactory.LoadImage(file, extension);
+            SourceImageSource = image;
+            SourceImageProperties = $"{image.Width}x{image.Height} ({extension}, {fileSize.Megabytes:F1} MB)";
+            SourceFileName = path;
         }
 
         private async void OptimizeButton_Click(object sender, RoutedEventArgs e)
@@ -186,6 +196,21 @@ namespace Toolkit
         private void SaveResult_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var args = ((App)App.Current).Args;
+            if (args.Length > 0 && File.Exists(args[0]))
+            {
+                LoadFromFile(args[0]);
+                OptimizeButton_Click(this, new RoutedEventArgs());
+            }
+            else if (Clipboard.ContainsImage())
+            {
+                LoadFromClipboard();
+                OptimizeButton_Click(this, new RoutedEventArgs());
+            }
         }
     }
 }
