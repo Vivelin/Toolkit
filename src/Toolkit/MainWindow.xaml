@@ -10,11 +10,58 @@
         Title="Toolkit"
         Height="450"
         Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         ResizeMode="CanMinimize">
-  <Grid>
-    <TextBlock HorizontalAlignment="Center"
-               VerticalAlignment="Center">
-      This space intentionally left blank.
-    </TextBlock>
+  <Grid Style="{StaticResource Container}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <GroupBox Grid.Column="0"
+              Header="Source">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Image x:Name="SourceImage"
+               Grid.Row="0"
+               Source="{Binding SourceImageSource}" />
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1">
+          <Button Margin="8"
+                  x:Name="PasteSource"
+                  Click="PasteSource_Click">Paste</Button>
+          <Button Margin="8"
+                  x:Name="BrowseSource"
+                  Click="BrowseSource_Click">Browse...</Button>
+          <TextBlock x:Name="SourcePropertiesText"
+                     VerticalAlignment="Center"
+                     Text="{Binding SourceImageProperties}">
+          </TextBlock>
+        </StackPanel>
+      </Grid>
+    </GroupBox>
+
+    <GroupBox Grid.Column="1"
+              Header="Result">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Image x:Name="ResultImage"
+               Grid.Row="0"
+               Source="{Binding ResultImageSource}" />
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1">
+          <Button Margin="8"
+                  x:Name="CopyResult">Copy</Button>
+        </StackPanel>
+      </Grid>
+    </GroupBox>
   </Grid>
 </Window>

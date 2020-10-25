@@ -9,9 +9,14 @@
       <ResourceDictionary.MergedDictionaries>
         <ui:ThemeResources />
         <ui:XamlControlsResources />
-        <!-- Other merged dictionaries here -->
+        <ResourceDictionary>
+          <Style x:Key="Container"
+                 TargetType="Grid">
+            <Setter Property="Margin"
+                    Value="8" />
+          </Style>
+        </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
-      <!-- Other app resources here -->
     </ResourceDictionary>
   </Application.Resources>
 </Application>

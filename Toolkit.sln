@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolkit", "src\Toolkit\Toolkit.csproj", "{14AA0A37-CA20-42F1-9702-B5F3F7637ABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toolkit", "src\Toolkit\Toolkit.csproj", "{14AA0A37-CA20-42F1-9702-B5F3F7637ABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivelin.Toolkit", "src\Vivelin.Toolkit\Vivelin.Toolkit.csproj", "{59369EEB-4B75-4CD7-AF1B-5796791C7154}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vivelin.Toolkit", "src\Vivelin.Toolkit\Vivelin.Toolkit.csproj", "{59369EEB-4B75-4CD7-AF1B-5796791C7154}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivelin.Toolkit.Tests", "test\Vivelin.Toolkit.Tests\Vivelin.Toolkit.Tests.csproj", "{583E0E72-511E-4C20-B512-90F094646D0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vivelin.Toolkit.Tests", "test\Vivelin.Toolkit.Tests\Vivelin.Toolkit.Tests.csproj", "{583E0E72-511E-4C20-B512-90F094646D0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

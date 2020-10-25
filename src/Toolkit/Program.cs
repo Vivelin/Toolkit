@@ -31,7 +31,7 @@ namespace Toolkit
                 try
                 {
                     OptimizeAsync(file, buffer).GetAwaiter().GetResult();
-                    SetClipboardImage(buffer);
+                    ClipboardHelpers.SetImageFromStream(buffer);
                     return ExitCode.Success;
                 }
                 catch (ArgumentException)
@@ -50,7 +50,7 @@ namespace Toolkit
                 try
                 {
                     OptimizeAsync(buffer, target).GetAwaiter().GetResult();
-                    SetClipboardImage(target);
+                    ClipboardHelpers.SetImageFromStream(target);
                     return ExitCode.Success;
                 }
                 catch (ArgumentException)
@@ -77,18 +77,6 @@ namespace Toolkit
                 source.Seek(0, SeekOrigin.Begin);
 
             await s_optimizer.OptimizeAsync(source, target);
-        }
-
-        private static void SetClipboardImage(Stream target)
-        {
-            if (target.CanSeek)
-                target.Seek(0, SeekOrigin.Begin);
-
-            var decoder = new PngBitmapDecoder(target,
-                BitmapCreateOptions.None,
-                BitmapCacheOption.Default);
-            var frame = decoder.Frames.Single();
-            Clipboard.SetImage(frame);
         }
 
         private static class ExitCode
