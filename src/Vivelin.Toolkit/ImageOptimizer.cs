@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 
 namespace Vivelin.Toolkit
@@ -17,25 +19,36 @@ namespace Vivelin.Toolkit
             _configuration = Configuration.Default;
         }
 
-        public Task OptimizeAsync(Stream source, Stream target,
+        public Task<OptimizedImage> OptimizeAsync(Stream source,
             CancellationToken cancellationToken = default)
         {
-            return OptimizeAsync(source, target, new ImageOptimizerOptions(), cancellationToken);
+            return OptimizeAsync(source, new ImageOptimizerOptions(), cancellationToken);
         }
 
-        public async Task OptimizeAsync(Stream source, Stream target,
+        public async Task<OptimizedImage> OptimizeAsync(Stream source,
             ImageOptimizerOptions options,
             CancellationToken cancellationToken = default)
         {
             try
             {
+                var format = await Image.DetectFormatAsync(_configuration, source);
+
                 using var image = await Image.LoadAsync(_configuration, source, cancellationToken);
                 image.Mutate(x => x.Resize(new ResizeOptions
                 {
                     Size = new Size(options.TargetWidth, options.TargetHeight),
                     Mode = ResizeMode.Max
                 }));
-                await image.SaveAsPngAsync(target, cancellationToken);
+
+                var buffer = new MemoryStream();
+                if (format is JpegFormat)
+                {
+                    await image.SaveAsJpegAsync(buffer, cancellationToken);
+                    return new OptimizedImage(buffer, ImageFormat.Jpeg);
+                }
+
+                await image.SaveAsPngAsync(buffer, cancellationToken);
+                return new OptimizedImage(buffer, ImageFormat.Png);
             }
             catch (UnknownImageFormatException ex)
             {

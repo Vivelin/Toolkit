@@ -152,7 +152,7 @@ namespace Toolkit
             var extension = Path.GetExtension(path);
             var image = _bitmapSourceFactory.LoadImage(file, extension);
             SourceImageSource = image;
-            SourceImageProperties = $"{image.Width}x{image.Height} ({extension}, {fileSize.Megabytes:F1} MB)";
+            SourceImageProperties = $"{image.PixelWidth}x{image.PixelHeight} ({extension}, {fileSize.Megabytes:F1} MB)";
             SourceFileName = path;
         }
 
@@ -162,15 +162,13 @@ namespace Toolkit
             if (source == null)
                 return;
 
-            using var buffer = new MemoryStream();
             var options = new ImageOptimizerOptions();
-            await _optimizer.OptimizeAsync(source, buffer, options);
+            var result = await _optimizer.OptimizeAsync(source, options);
 
-            buffer.Seek(0, SeekOrigin.Begin);
-            var fileSize = new FileSize(buffer.Length);
-            var image = _bitmapSourceFactory.LoadImage(buffer, ".png");
+            var fileSize = new FileSize(result.Stream.Length);
+            var image = _bitmapSourceFactory.LoadImage(result.Stream, result.DefaultExtension);
             ResultImageSource = image;
-            ResultImageProperties = $"{Math.Floor(image.Width)}x{Math.Floor(image.Height)} (.png, {fileSize.Megabytes:F1} MB)";
+            ResultImageProperties = $"{image.PixelWidth}x{image.PixelHeight} ({result.DefaultExtension}, {fileSize.Megabytes:F1} MB)";
 
             Clipboard.SetImage(image);
         }
