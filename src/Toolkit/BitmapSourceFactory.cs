@@ -8,6 +8,7 @@ namespace Toolkit
 {
     public class BitmapSourceFactory
     {
+
         public BitmapSource LoadImage(Stream source, string extension)
         {
             var decoder = CreateDecoder(source, extension);

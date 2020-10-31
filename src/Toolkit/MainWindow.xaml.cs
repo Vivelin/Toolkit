@@ -154,6 +154,8 @@ namespace Toolkit
             SourceImageSource = image;
             SourceImageProperties = $"{image.PixelWidth}x{image.PixelHeight} ({extension}, {fileSize.Megabytes:F1} MB)";
             SourceFileName = path;
+            SourceImage.RenderTransform = image.GetExifOrientationRenderTransform();
+            SourceImage.RenderTransformOrigin = new Point(0.5, 0.5);
         }
 
         private async void OptimizeButton_Click(object sender, RoutedEventArgs e)

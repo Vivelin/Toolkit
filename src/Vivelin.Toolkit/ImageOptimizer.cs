@@ -43,6 +43,7 @@ namespace Vivelin.Toolkit
                 var buffer = new MemoryStream();
                 if (format is JpegFormat)
                 {
+                    var encoder = new JpegEncoder { Quality = options.Quality };
                     await image.SaveAsJpegAsync(buffer, cancellationToken);
                     return new OptimizedImage(buffer, ImageFormat.Jpeg);
                 }
