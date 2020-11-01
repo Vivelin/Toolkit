@@ -34,11 +34,14 @@ namespace Vivelin.Toolkit
                 var format = await Image.DetectFormatAsync(_configuration, source);
 
                 using var image = await Image.LoadAsync(_configuration, source, cancellationToken);
-                image.Mutate(x => x.Resize(new ResizeOptions
+                if (image.Width > options.TargetWidth || image.Height > options.TargetHeight)
                 {
-                    Size = new Size(options.TargetWidth, options.TargetHeight),
-                    Mode = ResizeMode.Max
-                }));
+                    image.Mutate(x => x.Resize(new ResizeOptions
+                    {
+                        Size = new Size(options.TargetWidth, options.TargetHeight),
+                        Mode = ResizeMode.Max
+                    }));
+                }
 
                 var buffer = new MemoryStream();
                 if (format is JpegFormat)
