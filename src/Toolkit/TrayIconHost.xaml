@@ -5,23 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Toolkit"
         xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
         Title="ToolkitTrayIconHost"
         Visibility="Hidden">
 
-  <Window.Resources>
-    <ResourceDictionary>
-      <BitmapImage x:Key="IconColor"
-                   UriSource="/Assets/toolkit-color.ico" />
-      <BitmapImage x:Key="IconLight"
-                   UriSource="/Assets/toolkit-light.ico" />
-      <BitmapImage x:Key="IconDark"
-                   UriSource="/Assets/toolkit-dark.ico" />
-    </ResourceDictionary>
-  </Window.Resources>
-
   <tb:TaskbarIcon x:Name="TrayIcon"
-                  IconSource="{StaticResource IconLight}"
+                  IconSource="{StaticResource TrayIcon}"
                   ToolTipText="Toolkit">
     <tb:TaskbarIcon.ContextMenu>
       <ContextMenu>

@@ -1,18 +1,32 @@
 ﻿<Application x:Class="Toolkit.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019"
              xmlns:local="clr-namespace:Toolkit"
              StartupUri="TrayIconHost.xaml">
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
+        <ui:ThemeResources>
+          <ui:ThemeResources.ThemeDictionaries>
+            <ResourceDictionary x:Key="Light">
+              <BitmapImage x:Key="TrayIcon"
+                           UriSource="/Assets/toolkit-dark.ico" />
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+              <BitmapImage x:Key="TrayIcon"
+                           UriSource="/Assets/toolkit-light.ico" />
+            </ResourceDictionary>
+          </ui:ThemeResources.ThemeDictionaries>
+        </ui:ThemeResources>
+        <ui:XamlControlsResources />
       </ResourceDictionary.MergedDictionaries>
       <Style x:Key="Container"
              TargetType="Grid">
         <Setter Property="Margin"
                 Value="8" />
       </Style>
-      <Style TargetType="Button">
+      <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
         <Setter Property="Margin"
                 Value="8" />
         <Setter Property="Padding"
@@ -22,6 +36,12 @@
         <Setter Property="MinWidth"
                 Value="80" />
       </Style>
+      <BitmapImage x:Key="IconColor"
+                   UriSource="/Assets/toolkit-color.ico" />
+      <BitmapImage x:Key="IconLight"
+                   UriSource="/Assets/toolkit-light.ico" />
+      <BitmapImage x:Key="IconDark"
+                   UriSource="/Assets/toolkit-dark.ico" />
     </ResourceDictionary>
   </Application.Resources>
 </Application>

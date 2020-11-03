@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.0.14" />
+    <PackageReference Include="ModernWpfUI" Version="0.9.2" />
   </ItemGroup>
 
   <ItemGroup>
