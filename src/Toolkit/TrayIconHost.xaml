@@ -1,0 +1,40 @@
+﻿<Window x:Class="Toolkit.TrayIconHost"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Toolkit"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        mc:Ignorable="d"
+        Title="ToolkitTrayIconHost"
+        Visibility="Hidden">
+
+  <Window.Resources>
+    <ResourceDictionary>
+      <BitmapImage x:Key="IconColor"
+                   UriSource="/Assets/toolkit-color.ico" />
+      <BitmapImage x:Key="IconLight"
+                   UriSource="/Assets/toolkit-light.ico" />
+      <BitmapImage x:Key="IconDark"
+                   UriSource="/Assets/toolkit-dark.ico" />
+    </ResourceDictionary>
+  </Window.Resources>
+
+  <tb:TaskbarIcon x:Name="TrayIcon"
+                  IconSource="{StaticResource IconLight}"
+                  ToolTipText="Toolkit">
+    <tb:TaskbarIcon.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="Image">
+          <MenuItem x:Name="Tray_OptimizeImage"
+                    Header="Optimize image"
+                    Click="Tray_OptimizeImage_Click" />
+        </MenuItem>
+        <MenuItem x:Name="Tray_Exit"
+                  Header="Exit"
+                  Click="Tray_Exit_Click" />
+      </ContextMenu>
+    </tb:TaskbarIcon.ContextMenu>
+  </tb:TaskbarIcon>
+
+</Window>

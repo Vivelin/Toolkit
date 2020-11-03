@@ -16,7 +16,7 @@ namespace Toolkit
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class OptimizeImageWindow : Window, INotifyPropertyChanged
     {
         private const string ClipboardSource = "Clipboard";
 
@@ -29,7 +29,7 @@ namespace Toolkit
         private string _resultImageProperties;
         private string _sourceFileName;
 
-        public MainWindow()
+        public OptimizeImageWindow()
         {
             _bitmapSourceFactory = new BitmapSourceFactory();
             _optimizer = new ImageOptimizer();

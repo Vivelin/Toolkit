@@ -6,8 +6,30 @@
     <UseWPF>true</UseWPF>
     <StartupObject>Toolkit.Program</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>toolkit.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\toolkit-color.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\toolkit-color.ico" />
+    <None Remove="Assets\toolkit-color.svg" />
+    <None Remove="Assets\toolkit-dark.ico" />
+    <None Remove="Assets\toolkit-dark.svg" />
+    <None Remove="Assets\toolkit-light.ico" />
+    <None Remove="Assets\toolkit-light.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\toolkit-color.ico" />
+    <Resource Include="Assets\toolkit-color.svg" />
+    <Resource Include="Assets\toolkit-dark.ico" />
+    <Resource Include="Assets\toolkit-dark.svg" />
+    <Resource Include="Assets\toolkit-light.ico" />
+    <Resource Include="Assets\toolkit-light.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.0.14" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Vivelin.Toolkit\Vivelin.Toolkit.csproj" />
