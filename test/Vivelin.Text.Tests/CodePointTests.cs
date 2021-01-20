@@ -37,5 +37,16 @@ namespace Vivelin.Text.Tests
             var codePoint = new CodePoint(value);
             codePoint.Bytes.ToArray().Should().BeEquivalentTo(expected);
         }
+
+        [Theory]
+        [InlineData(0x41, "LATIN CAPITAL LETTER A")]
+        [InlineData(0x200D, "ZERO WIDTH JOINER")]
+        [InlineData(0x2603, "SNOWMAN")]
+        [InlineData(0x1F431, "CAT FACE")]
+        public void CodePointHasName(int value, string expected)
+        {
+            var codePoint = new CodePoint(value);
+            codePoint.Name.Should().Be(expected);
+        }
     }
 }
