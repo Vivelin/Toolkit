@@ -11,6 +11,7 @@ namespace Vivelin.Text.Tests
         [InlineData("abc", "a", "b", "c")]
         [InlineData("á", "á")]
         [InlineData("a\u0301", "á")]
+        [InlineData("‏abc", "\u200F", "a", "b", "c")]
         public void StringInspectorCanReadGraphemesFromString(
             string value, params string[] expectedGraphemes)
         {
