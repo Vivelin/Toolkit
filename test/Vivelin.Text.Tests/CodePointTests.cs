@@ -12,8 +12,8 @@ namespace Vivelin.Text.Tests
     public class CodePointTests
     {
         [Theory]
-        [InlineData(0x41, "U+41")]
-        [InlineData(0x200D, "U+200D")]
+        [InlineData(0x41, "A")]
+        [InlineData(0x200D, "\u200D")]
         public void CodePointHasStringRepresentation(int value, string representation)
         {
             var codePoint = new CodePoint(value);
