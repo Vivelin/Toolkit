@@ -34,7 +34,7 @@ namespace Vivelin.Text
             _rune = rune;
 
             Value = rune.Value;
-            UnicodeValue = $"U+{rune.Value:X}";
+            UnicodeValue = $"U+{rune.Value:X4}";
             Name = UnicodeInfo.GetName(rune.Value);
             Category = Rune.GetUnicodeCategory(rune);
             Bytes = GetUtf8Encoding(rune);

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivelin.Text", "src\Vivelin.Text\Vivelin.Text.csproj", "{7A743454-8708-45BB-9316-C7487BDB647F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vivelin.Text", "src\Vivelin.Text\Vivelin.Text.csproj", "{7A743454-8708-45BB-9316-C7487BDB647F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivelin.Text.Tests", "test\Vivelin.Text.Tests\Vivelin.Text.Tests.csproj", "{F6DFC775-B671-4C99-8775-7EB45D9756CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vivelin.Text.Tests", "test\Vivelin.Text.Tests\Vivelin.Text.Tests.csproj", "{F6DFC775-B671-4C99-8775-7EB45D9756CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolkit", "src\Toolkit\Toolkit.csproj", "{235F2D63-D74E-42AB-B086-A245684EF3FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F6DFC775-B671-4C99-8775-7EB45D9756CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6DFC775-B671-4C99-8775-7EB45D9756CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6DFC775-B671-4C99-8775-7EB45D9756CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{235F2D63-D74E-42AB-B086-A245684EF3FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{235F2D63-D74E-42AB-B086-A245684EF3FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{235F2D63-D74E-42AB-B086-A245684EF3FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{235F2D63-D74E-42AB-B086-A245684EF3FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
