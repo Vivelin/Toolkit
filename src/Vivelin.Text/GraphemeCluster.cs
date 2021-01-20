@@ -26,14 +26,15 @@ namespace Vivelin.Text
 
         public string Representation { get; }
 
-        public IReadOnlyList<object> CodePoints { get; }
+        public IReadOnlyList<CodePoint> CodePoints { get; }
 
-        private static IReadOnlyList<object> GetCodePoints(string value)
+        private static IReadOnlyList<CodePoint> GetCodePoints(string value)
         {
-            var codePoints = new List<object>();
+            var codePoints = new List<CodePoint>();
             foreach (var rune in value.EnumerateRunes())
             {
-                codePoints.Add(rune);
+                var codePoint = new CodePoint(rune);
+                codePoints.Add(codePoint);
             }
             return codePoints.AsReadOnly();
         }
