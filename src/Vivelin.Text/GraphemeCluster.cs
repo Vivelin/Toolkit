@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace Vivelin.Text
@@ -14,14 +15,8 @@ namespace Vivelin.Text
         /// struct with the specified value.
         /// </summary>
         /// <param name="value">The grapheme to represent.</param>
-        public GraphemeCluster(string value)
+        internal GraphemeCluster(string value)
         {
-            var si = new StringInfo(value);
-            if (si.LengthInTextElements == 0)
-                throw new ArgumentException("The specified string contains no grapheme clusters.");
-            if (si.LengthInTextElements > 1)
-                throw new ArgumentException("The specified string contains more than one grapheme cluster.");
-
             Representation = value;
             CodePoints = GetCodePoints(value);
         }
@@ -34,7 +29,28 @@ namespace Vivelin.Text
         /// <summary>
         /// Gets the code points that make up the grapheme.
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public IReadOnlyList<CodePoint> CodePoints { get; }
+
+        /// <summary>
+        /// Creates a new <see cref="GraphemeCluster"/> from the specified
+        /// string.
+        /// </summary>
+        /// <param name="value">The string containing a single grapheme.</param>
+        /// <returns>A new <see cref="GraphemeCluster"/> struct.</returns>
+        /// <exception cref="ArgumentException">
+        /// The string either contains no graphemes or too many.
+        /// </exception>
+        public static GraphemeCluster Create(string value)
+        {
+            var si = new StringInfo(value);
+            if (si.LengthInTextElements == 0)
+                throw new ArgumentException("The specified string contains no grapheme clusters.");
+            if (si.LengthInTextElements > 1)
+                throw new ArgumentException("The specified string contains more than one grapheme cluster.");
+
+            return new GraphemeCluster(value);
+        }
 
         private static IReadOnlyList<CodePoint> GetCodePoints(string value)
         {

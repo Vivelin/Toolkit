@@ -13,7 +13,7 @@ namespace Vivelin.Text.Tests
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                _ = new GraphemeCluster(value);
+                _ = GraphemeCluster.Create(value);
             });
         }
 
@@ -23,7 +23,7 @@ namespace Vivelin.Text.Tests
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                _ = new GraphemeCluster(value);
+                _ = GraphemeCluster.Create(value);
             });
         }
 
@@ -42,6 +42,8 @@ namespace Vivelin.Text.Tests
         [InlineData("☃", 1)]
         [InlineData("👩🏻", 2)]
         [InlineData("🐱‍👤", 3)]
+        [InlineData("á", 1)]
+        [InlineData("a\u0301", 2)]
         public void GraphemeClusterContainsNumberOfCodePoints(string value, 
             int codePoints)
         {
@@ -54,6 +56,8 @@ namespace Vivelin.Text.Tests
         [InlineData("☃", 0x2603)]
         [InlineData("👩🏻", 0x1F469, 0x1F3FB)]
         [InlineData("🐱‍👤", 0x1F431, 0x200D, 0x1F464)]
+        [InlineData("á", 0xE1)]
+        [InlineData("á", 0x61, 0x0301)]
         public void GraphemeClusterContainsCodePoints(string value,
             params int[] codePoints)
         {
