@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace Vivelin.Text
     /// <summary>
     /// Represents a single UTF-8 code point.
     /// </summary>
+    [DebuggerDisplay("{ToString()} ({UnicodeValue,nq})")]
     public readonly struct CodePoint
     {
         private readonly Rune _rune;
@@ -31,6 +33,7 @@ namespace Vivelin.Text
             _rune = rune;
 
             Value = rune.Value;
+            UnicodeValue = $"U+{rune.Value:X}";
             Category = Rune.GetUnicodeCategory(rune);
 
             var bytes = new byte[rune.Utf8SequenceLength];
@@ -42,6 +45,11 @@ namespace Vivelin.Text
         /// Gets the numerical value of the code point.
         /// </summary>
         public int Value { get; }
+
+        /// <summary>
+        /// Gets the numerical value of the code point as a typical string.
+        /// </summary>
+        public string UnicodeValue { get; }
 
         /// <summary>
         /// Gets the UTF-8 byte encoding of the code point.

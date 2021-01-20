@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vivelin.Text
 {
     /// <summary>
-    /// Represents a sequence of code points
+    /// Represents a sequence of code points encoding a single glyph.
     /// </summary>
     public readonly struct GraphemeCluster
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphemeCluster"/>
+        /// struct with the specified value.
+        /// </summary>
+        /// <param name="value">The grapheme to represent.</param>
         public GraphemeCluster(string value)
         {
             var si = new StringInfo(value);
@@ -24,8 +26,14 @@ namespace Vivelin.Text
             CodePoints = GetCodePoints(value);
         }
 
+        /// <summary>
+        /// Gets a string representation of the grapheme cluster.
+        /// </summary>
         public string Representation { get; }
 
+        /// <summary>
+        /// Gets the code points that make up the grapheme.
+        /// </summary>
         public IReadOnlyList<CodePoint> CodePoints { get; }
 
         private static IReadOnlyList<CodePoint> GetCodePoints(string value)
@@ -37,6 +45,15 @@ namespace Vivelin.Text
                 codePoints.Add(codePoint);
             }
             return codePoints.AsReadOnly();
+        }
+
+        /// <summary>
+        /// Returns a string representation of the grapheme cluster.
+        /// </summary>
+        /// <returns>The string.</returns>
+        public override string ToString()
+        {
+            return Representation;
         }
     }
 }
